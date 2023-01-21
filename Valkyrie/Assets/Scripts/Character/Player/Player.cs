@@ -38,12 +38,19 @@ public class Player : MonoBehaviour, IStatus, IEquiptable
     InteractiveActionUI interactUI;
 
     ItemSlot equipItemSlot;
-    public ItemSlot EquipItemSlot => equipItemSlot;
+    public ItemSlot EquipItemSlot
+    {
+        get => equipItemSlot;
+        set
+        {
+            equipItemSlot = value;
+        }
+    }
 
     public Inventory inven;
     public CastData[] castDatas;
 
-    SkillWindow window;
+    public SkillWindow window;
     BoxCollider weaponCollider;
     Animator anim;
     TargetHP_Bar targetHP;
@@ -63,7 +70,14 @@ public class Player : MonoBehaviour, IStatus, IEquiptable
         }
     }
 
-    public float MaxHP => maxHP;
+    public float MaxHP
+    {
+        get => maxHP;
+        set
+        {
+            maxHP = value;
+        }
+    }
 
     public float MP
     {
@@ -78,7 +92,14 @@ public class Player : MonoBehaviour, IStatus, IEquiptable
         }
     }
 
-    public float MaxMP => maxMP;
+    public float MaxMP
+    {
+        get => maxMP;
+        set
+        {
+            maxMP = value;
+        }
+    }
 
     public float AttackPos => attackPos;
     public float DefensePos => defensePos;
@@ -218,7 +239,6 @@ public class Player : MonoBehaviour, IStatus, IEquiptable
                     data.CurrentCoolTime -= Time.deltaTime;
                 }
             }
-           
         }
     }
 
@@ -444,7 +464,7 @@ public class Player : MonoBehaviour, IStatus, IEquiptable
             {
                 case SkillCode.Hollow:
                     hollow.gameObject.transform.position = emitPosition.transform.position;
-                    hollow.Play_Charging();
+                    StartCoroutine(SkillHollow());
                     GameManager.Inst.MainPlayer.isSkillReady = true;
                     castDatas[(int)code].ResetCoolTime();
                     break;
@@ -461,5 +481,15 @@ public class Player : MonoBehaviour, IStatus, IEquiptable
                     break;
             }
         }
+    }
+    IEnumerator SkillHollow()
+    {
+        hollow.Play_Charging();
+        yield return new WaitForSeconds(3.0f);
+        hollow.Finish_Charging();
+        yield return new WaitForSeconds(1.0f);
+        hollow.Burst_Beam();
+        yield return new WaitForSeconds(3.0f);
+        hollow.Dead();
     }
 }

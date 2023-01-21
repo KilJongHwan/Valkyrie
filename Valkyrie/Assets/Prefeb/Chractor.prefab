@@ -213,7 +213,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _charactorBody: {fileID: 2179782792049362212}
   _cameraArm: {fileID: 7412196683654473964}
-  speed: 3
+  speed: 5
   turnSpeed: 10
   targetRotation: {x: 0, y: 0, z: 0, w: 1}
 --- !u!1001 &8437392924420795527
@@ -223,6 +223,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7412196683832038368}
     m_Modifications:
+    - target: {fileID: 1426178413176921903, guid: f4f268a7fcc088348b19d387d8b167da,
+        type: 3}
+      propertyPath: interactRange
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 4049593096756845508, guid: f4f268a7fcc088348b19d387d8b167da,
         type: 3}
       propertyPath: m_LocalPosition.z

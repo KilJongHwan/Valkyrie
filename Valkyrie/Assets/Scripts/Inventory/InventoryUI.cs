@@ -88,7 +88,7 @@ public class InventoryUI : MonoBehaviour ,IDragHandler
     }
 
   
-    private void RefreshAllSlots()
+    public void RefreshAllSlots()
     {
         foreach (var slotUI in slotUIs)
         {

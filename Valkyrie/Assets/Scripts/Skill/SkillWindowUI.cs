@@ -14,9 +14,6 @@ public class SkillWindowUI : MonoBehaviour
     CanvasGroup canvasGroup;
     Button onOffButton;
 
-    Player player;
-
-  
 
     public System.Action onWindowOpen;
     public System.Action onWindowClose;
@@ -27,11 +24,6 @@ public class SkillWindowUI : MonoBehaviour
 
         onOffButton = GameObject.Find("SkillWindowOnOffButton").GetComponent<Button>();
         onOffButton.onClick.AddListener(OnOffswitch);
-    }
-    private void Start()
-    {
-        player = GameManager.Inst.MainPlayer;
-
     }
     public void InitailizeWindow(SkillWindow newWindow)
     {
@@ -70,7 +62,7 @@ public class SkillWindowUI : MonoBehaviour
         RefreshAllSlots();  // 전체 슬롯UI 갱신
     }
    
-    private void RefreshAllSlots()
+    public void RefreshAllSlots()
     {
         foreach (var slotUI in slotUIs)
         {

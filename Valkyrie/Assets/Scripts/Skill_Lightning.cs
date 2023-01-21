@@ -8,10 +8,14 @@ public class Skill_Lightning : MonoBehaviour
     GameObject start;
     GameObject end;
     Player player;
+    SphereCollider col;
+
+    List<IStatus> targetList;
     private void Awake()
     {
         start = transform.GetChild(0).gameObject;
         end = transform.GetChild(1).gameObject;
+        col = GetComponent<SphereCollider>();
     }
     private void Start()
     {
@@ -24,6 +28,11 @@ public class Skill_Lightning : MonoBehaviour
             end.transform.position = player.Target.position;
         else
             end.transform.position = start.transform.forward;
+        col.gameObject.transform.position = end.transform.position;
+        foreach (var list in targetList)
+        {
+            list.TakeDamage(lightningDamage);
+        }
         if (DurationEnd)
         {
             player.lightningEffect.SetActive(false);
@@ -36,8 +45,18 @@ public class Skill_Lightning : MonoBehaviour
     {
         if (other.isTrigger == false)
         {
-            IStatus enemy = other.GetComponent<IStatus>();
-            enemy.TakeDamage(lightningDamage);
+            IStatus enemy = other.gameObject.GetComponent<IStatus>();
+            if (enemy != null)
+            {
+                targetList.Add(enemy);
+            }
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.isTrigger == false)
+        {
+            targetList.Remove(other.gameObject.GetComponent<IStatus>());
         }
     }
 }

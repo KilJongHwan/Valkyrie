@@ -55,7 +55,9 @@ public class VertualJoystick : MonoBehaviour, IBeginDragHandler, IDragHandler, I
                 controller.Move(Vector2.zero);
                 if (player.Target != null)
                 {
-                    controller.targetRotation = Quaternion.LookRotation(player.Target.position - player.transform.position);
+                    Vector3 dir = player.Target.position - player.transform.position;
+                    dir.y = 0.0f;
+                    controller.targetRotation = Quaternion.LookRotation(dir);
                 }
                 break;
             case JoystickType.Rotate:
@@ -86,7 +88,9 @@ public class VertualJoystick : MonoBehaviour, IBeginDragHandler, IDragHandler, I
                 controller.Move(inputDrection * _sensitivity); 
                 if (player.Target != null)
                 {
-                    controller.targetRotation = Quaternion.LookRotation(player.Target.position - player.transform.position);
+                    Vector3 dir = player.Target.position - player.transform.position;
+                    dir.y = 0.0f;
+                    controller.targetRotation = Quaternion.LookRotation(dir);
                 }
                 break;
             case JoystickType.Rotate:

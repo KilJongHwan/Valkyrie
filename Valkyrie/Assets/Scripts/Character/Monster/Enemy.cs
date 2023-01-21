@@ -93,6 +93,10 @@ public class Enemy : MonoBehaviour, IStatus
     private void Start()
     {
         this.gameObject.SetActive(false);
+        if (GameManager.Inst.IsWarp)
+        {
+            this.gameObject.SetActive(true);
+        }
         if (patrolRoute)
         {
             childCount = patrolRoute.childCount;    // 자식 개수 설정
@@ -159,60 +163,83 @@ public class Enemy : MonoBehaviour, IStatus
         switch (state)
         {
             case EnemyState.Idle:
-                if (SearchPlayer())
-                {
-                    if (scream)
-                    {
-                        StartCoroutine(Scream());
-                        return;
-                    }
-                }
-                if (!scream)
-                {
-                    anim.SetBool("Scream", scream);
-                    timeCountDown -= Time.deltaTime;
-                    if (timeCountDown < 0.0f)
-                    {
-                        ChangeState(EnemyState.Patrol);
-                        return;
-                    }
-                }
+                IdleUpdate();
                 break;
             case EnemyState.Patrol:
-                if (SearchPlayer())
-                {
-                    ChangeState(EnemyState.Chase);
-                    return;
-                }
-                if (agent.remainingDistance <= agent.stoppingDistance)
-                {
-                    index++;                
-                    index %= childCount;    
-
-                    ChangeState(EnemyState.Idle);
-                    return;
-                }
+                PatrolUpdate();
                 break;
             case EnemyState.Chase:
-                if (!SearchPlayer())
-                {
-                    ChangeState(EnemyState.Patrol);
-                    return;
-                }
+                ChaseUpdate();
                 break;
             case EnemyState.Attack:
-                attackCooltime -= Time.deltaTime;
-                transform.rotation = Quaternion.Slerp(transform.rotation,
-                    Quaternion.LookRotation(attackTarget.transform.position - transform.position), 0.1f);
-                if (attackCooltime < 0.0f)
-                {
-                    anim.SetTrigger("BasicAttack");
-                    attackCooltime = attackSpeed;
-                }
+                AttackUpdate();
                 break;
             case EnemyState.Dead:
             default:
                 break;
+        }
+    }
+
+
+
+    void IdleUpdate()
+    {
+        if (SearchPlayer())
+        {
+            if (scream)
+            {
+                StartCoroutine(Scream());
+                return;
+            }
+        }
+        if (!scream)
+        {
+            anim.SetBool("Scream", scream);
+            if (SearchPlayer())
+            {
+                ChangeState(EnemyState.Chase);
+            }
+            timeCountDown -= Time.deltaTime;
+            if (timeCountDown < 0.0f)
+            {
+                ChangeState(EnemyState.Patrol);
+                return;
+            }
+        }
+    }
+    void PatrolUpdate()
+    {
+        if (SearchPlayer())
+        {
+            ChangeState(EnemyState.Chase);
+            return;
+        }
+        if (agent.remainingDistance <= agent.stoppingDistance)
+        {
+            index++;
+            index %= childCount;
+
+            ChangeState(EnemyState.Idle);
+            return;
+        }
+    }
+    void ChaseUpdate()
+    {
+        if (!SearchPlayer())
+        {
+            ChangeState(EnemyState.Patrol);
+            return;
+        }
+    }
+    void AttackUpdate()
+    {
+        attackCooltime -= Time.deltaTime;
+        transform.rotation = Quaternion.Slerp(transform.rotation,
+            Quaternion.LookRotation(attackTarget.transform.position - transform.position), 0.1f);
+        if (attackCooltime < 0.0f)
+        {
+            anim.SetTrigger("BasicAttack");
+            attackCooltime = attackSpeed;
         }
     }
     void ChangeState(EnemyState newState)

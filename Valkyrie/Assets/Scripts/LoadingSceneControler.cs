@@ -49,14 +49,19 @@ public class LoadingSceneControler : MonoBehaviour
     {
         waitSeconds = new WaitForSeconds(0.2f);
         loadingTextCoroutine = LoadingTextProcess();
-        StartCoroutine(loadingTextCoroutine);
+        StartCoroutine(loadingTextCoroutine); 
+        if (GameManager.Inst.IsWarp)
+        {
+            nextSceneName = "BattleScene";
+        }
         loadSceneCoroutine = LoadScene();
         StartCoroutine(loadSceneCoroutine);
     }
     private void Update()
     {
+       
         //slider.value = Mathf.Lerp(slider.value, loadRatio, Time.deltaTime * sliderUpdateSpeed);
-
+    
         // slider의 value가 아직 loadRatio보다 낮으면 빠르게 loadRatio까지 올리는 것이 목적
         if (slider.value < loadRatio)
         {

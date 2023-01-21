@@ -26,22 +26,16 @@ public class TPSCharactorControler : MonoBehaviour
     }
     IEnumerator Lookup()
     {
-        Ray dir = new(_charactorBody.transform.position, _charactorBody.forward);
+        Ray ray = new(_charactorBody.transform.position, _charactorBody.forward);
 
         if (GameManager.Inst.MainPlayer.Target != null)
         {
-            Vector3 look = GameManager.Inst.MainPlayer.Target.position - _charactorBody.transform.position;
-            look.y = 0.0f;
-            _charactorBody.transform.rotation = Quaternion.Lerp(_charactorBody.transform.rotation, Quaternion.LookRotation(look), turnSpeed * Time.deltaTime);
+            
+                Vector3 look = GameManager.Inst.MainPlayer.Target.position - _charactorBody.transform.position;
+                look.y = 0.0f;
+                _charactorBody.transform.rotation = Quaternion.Lerp(_charactorBody.transform.rotation, Quaternion.LookRotation(look), turnSpeed * Time.deltaTime);
 
-            //while (!Physics.Raycast(dir, out RaycastHit hit, 100.0f, LayerMask.GetMask("NPC", "Monster")))
-            //{
-            //    _charactorBody.transform.rotation = Quaternion.Slerp(_charactorBody.transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
-            //    if (GameManager.Inst.MainPlayer.Target == null)
-            //        break;
-            //    yield return new WaitForSeconds(0.1f);
-            //}
-            yield return new WaitForSeconds(5.0f);
+                yield return new WaitForSeconds(3.0f);
         }
     }
     public void Move(Vector2 inputDirection)
@@ -58,7 +52,8 @@ public class TPSCharactorControler : MonoBehaviour
 
             if (GameManager.Inst.IsTargeting)
             {
-                _charactorBody.transform.rotation = Quaternion.Slerp(_charactorBody.transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
+                Quaternion lookRotation = Quaternion.Slerp(_charactorBody.transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
+                _charactorBody.transform.rotation = lookRotation;
             }
             else
             {
