@@ -13,8 +13,8 @@ public class VertualJoystick : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     private bool isInput;
     [SerializeField] private TPSCharactorControler controller;
     public enum JoystickType { Move, Rotate}
-    [SerializeField] public JoystickType _JoystickType;
-    [SerializeField] float _sensitivity = 1f;
+    [SerializeField] public JoystickType joystickType;
+    [SerializeField] float sensitivity = 1f;
 
     Player player;
 
@@ -49,7 +49,7 @@ public class VertualJoystick : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     {
         lever.anchoredPosition = Vector2.zero;
         isInput = false;
-        switch (_JoystickType)
+        switch (joystickType)
         {
             case JoystickType.Move:
                 controller.Move(Vector2.zero);
@@ -68,7 +68,7 @@ public class VertualJoystick : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     IEnumerator Control()
     {
         yield return new WaitForSeconds(3.0f);
-        controller._cameraArm.rotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);
+        controller.cameraArm.rotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);
         GameManager.Inst.IsControlCam = false;
     }
     private void ControlJoystickLever(PointerEventData eventData)
@@ -82,10 +82,10 @@ public class VertualJoystick : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     private void InputControlVector()
     {
         // 캐릭터에게 입력 vector 전달
-        switch (_JoystickType)
+        switch (joystickType)
         {
             case JoystickType.Move:
-                controller.Move(inputDrection * _sensitivity); 
+                controller.Move(inputDrection * sensitivity); 
                 if (player.Target != null)
                 {
                     Vector3 dir = player.Target.position - player.transform.position;
@@ -94,7 +94,7 @@ public class VertualJoystick : MonoBehaviour, IBeginDragHandler, IDragHandler, I
                 }
                 break;
             case JoystickType.Rotate:
-                controller.LookAround(inputDrection * _sensitivity);
+                controller.LookAround(inputDrection * sensitivity);
                 GameManager.Inst.IsControlCam = true;
                 break;
         }

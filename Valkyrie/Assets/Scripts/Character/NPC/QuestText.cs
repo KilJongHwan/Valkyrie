@@ -5,7 +5,7 @@ using TMPro;
 
 public class QuestText : MonoBehaviour
 {
-    TextMeshProUGUI tittle;
+    public TextMeshProUGUI tittle;
     public TextMeshProUGUI detail;
 
     private void Awake()

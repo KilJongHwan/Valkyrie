@@ -73,10 +73,9 @@ public class InteractiveActionUI : MonoBehaviour, IPointerClickHandler
                 }
                 GameManager.Inst.MainPlayer.Level++;
                 GameManager.Inst.MainPlayer.Gold += 5000;
-                GameManager.Inst.Quest.QuestPoint++;
                 break;
             case ActionType.Interaction:
-
+                   
                 if (!GameManager.Inst.IsTargeting)
                 {
                     if (!GameManager.Inst.ShopUI.canvas.blocksRaycasts)

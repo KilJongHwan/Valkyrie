@@ -13,7 +13,9 @@ public class GameManager : MonoBehaviour
     InventoryUI invenUI;
     CommunicationManager talkData;
     QuestManager quest;
+    QuestUI questUI;
     ShopUI shopUI;
+    SpiritUI spiritUI;
     CharacterData saveData;
 
     bool isSkillSet = false;
@@ -24,7 +26,7 @@ public class GameManager : MonoBehaviour
     ItemDataManager itemData;
     static GameManager instence = null;
 
-    public Action onSkillset;
+    public static Action onSkillset;
 
     public static GameManager Inst
     {
@@ -58,9 +60,17 @@ public class GameManager : MonoBehaviour
     {
         get => quest;
     }
+    public QuestUI QuestUI
+    {
+        get => questUI;
+    }
     public ShopUI ShopUI
     {
         get => shopUI;
+    }
+    public SpiritUI SpiritUI
+    {
+        get => spiritUI;
     }
     public bool IsSkillSet
     {
@@ -121,6 +131,7 @@ public class GameManager : MonoBehaviour
         windowUI = FindObjectOfType<SkillWindowUI>();
         invenUI = FindObjectOfType<InventoryUI>();
         shopUI = FindObjectOfType<ShopUI>();
+        spiritUI = FindObjectOfType<SpiritUI>();
         skillData = GetComponent<SkillDataManager>();
         itemData = GetComponent<ItemDataManager>();
         talkData = GetComponent<CommunicationManager>();
@@ -128,34 +139,40 @@ public class GameManager : MonoBehaviour
     }
     public void SaveData(Player sPlayer)
     {
-        saveData = new CharacterData
-        {
-            Level = sPlayer.Level,
-            Gold = sPlayer.Gold,
-            MaxHP = sPlayer.MaxHP,
-            MaxMP = sPlayer.MaxMP,
-            Exp = sPlayer.Exp,
-            MaxExp = sPlayer.MaxExp,
-            Inven = sPlayer.inven,
-            InvenSaveUI = InvenUI,
-            EquipItemSlot = sPlayer.EquipItemSlot,
-            SkillWindow = sPlayer.window,
-            SkillWindowSave = WindowUI
-        };
+        saveData = new CharacterData();
+        saveData.Level = sPlayer.Level;
+        saveData.Gold = sPlayer.Gold;
+        saveData.MaxHP = sPlayer.MaxHP;
+        saveData.MaxMP = sPlayer.MaxMP;
+        saveData.Exp = sPlayer.Exp;
+        saveData.MaxExp = sPlayer.MaxExp;
+        saveData.Inven = new Inventory();
+        saveData.Inven = sPlayer.inven;
+        saveData.InvenSaveUI = sPlayer.invenUI;
+        saveData.SkillWindow = new SkillWindow();
+        saveData.SkillWindow = sPlayer.window;
+        saveData.SkillWindowSave = sPlayer.windowUI;
     }
-    public void LoadData(Player sPlayer)
+    public bool LoadData(Player sPlayer)
     {
-        sPlayer.Level = saveData.Level;
-        sPlayer.Gold = saveData.Gold;
-        sPlayer.MaxHP = saveData.MaxHP;
-        sPlayer.MaxMP = saveData.MaxMP;
-        sPlayer.Exp = saveData.Exp;
-        sPlayer.MaxExp = saveData.MaxExp;
-        sPlayer.inven = saveData.Inven;
-        invenUI = saveData.InvenSaveUI;
-        sPlayer.EquipItemSlot = saveData.EquipItemSlot;
-        sPlayer.window = saveData.SkillWindow;
-        windowUI = saveData.SkillWindowSave;
-        sPlayer.onGoldChange?.Invoke(sPlayer.Gold);
+        bool result = false;
+        if (saveData != null)
+        {
+            sPlayer.Level = saveData.Level;
+            sPlayer.Gold = saveData.Gold;
+            sPlayer.MaxHP = saveData.MaxHP;
+            sPlayer.MaxMP = saveData.MaxMP;
+            sPlayer.MaxExp = saveData.MaxExp;
+            sPlayer.Exp = saveData.Exp;
+            sPlayer.inven = saveData.Inven;
+            sPlayer.invenUI = saveData.InvenSaveUI;
+            sPlayer.window = saveData.SkillWindow;
+            sPlayer.windowUI = saveData.SkillWindowSave;
+            sPlayer.onGoldChange?.Invoke(sPlayer.Gold);
+            invenUI.InitializeInventory(sPlayer.inven);
+            windowUI.InitailizeWindow(sPlayer.window);
+            result = true;
+        }
+        return result;
     }
 }

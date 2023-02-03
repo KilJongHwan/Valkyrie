@@ -17,7 +17,6 @@ public class SpiritUI : MonoBehaviour, IPointerClickHandler
     ShopUI shop;
 
     bool isTalk;
-    bool isClear = true;
 
     Action<int> onStartTalk;
 
@@ -82,7 +81,7 @@ public class SpiritUI : MonoBehaviour, IPointerClickHandler
         talkIndex++;
     }
 
-    private void QuestNotice(int id)
+    public void QuestNotice(int id)
     {
         switch (quest.questID)
         {
@@ -90,15 +89,17 @@ public class SpiritUI : MonoBehaviour, IPointerClickHandler
                 if (index == 0)
                 {
                     questWindow.qTexts[index].Upload(quest.CheckQuest(id, 0), quest.CheckQuest(id, 1));
-                    questWindow.qTexts[index].gameObject.SetActive(isClear);
+                    questWindow.qTexts[index].gameObject.SetActive(true);
                 }
                 break;
             case 20:
                 if (index == 0)
+                {
                     quest.onQuestClear?.Invoke(550.0f, 5000);
+                    questWindow.qTexts[index].gameObject.SetActive(false);
+                }
                 index = 1;
                 questWindow.qTexts[index].Upload(quest.CheckQuest(id, 0), quest.CheckQuest(id, 1) + $" {quest.QuestPoint} / 1");
-                questWindow.qTexts[index].gameObject.SetActive(isClear);
                 break;
             default:
                 break;

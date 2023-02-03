@@ -423,7 +423,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8af442ef7f360994fa612c5861a134ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 100
+  hp: 5000
   mp: 100
   attackPos: 10
   defensePos: 10
@@ -433,6 +433,9 @@ MonoBehaviour:
   closeSightRange: 5
   attackCooltime: 1
   attackSpeed: 1
+  materials:
+  - {fileID: 2100000, guid: 483bc84e9c06fb74a978565bf66ff42d, type: 2}
+  - {fileID: 2100000, guid: bf9409be040ebba41a0b6c587e650252, type: 2}
 --- !u!135 &1292158742381867751
 SphereCollider:
   m_ObjectHideFlags: 0

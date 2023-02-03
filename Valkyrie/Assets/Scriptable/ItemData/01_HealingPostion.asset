@@ -15,7 +15,7 @@ MonoBehaviour:
   id: 1
   itemName: HealingPostion
   itemIcon: {fileID: 21300000, guid: 117b17facff65dc42b1b57deb7c21551, type: 3}
-  prefab: {fileID: 0}
+  prefab: {fileID: 3988628153614510067, guid: 42a1266b816ccc040b45c0d8d05f0ce1, type: 3}
   value: 50
   maxStackCount: 99
   healPoint: 20

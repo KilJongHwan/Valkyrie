@@ -20,6 +20,7 @@ public class Skill_Lightning : MonoBehaviour
     private void Start()
     {
         player = GameManager.Inst.MainPlayer;
+        targetList = new List<IStatus>();
     }
     private void Update()
     {
@@ -27,12 +28,16 @@ public class Skill_Lightning : MonoBehaviour
         if (player.Target != null)
             end.transform.position = player.Target.position;
         else
-            end.transform.position = start.transform.forward;
+            end.transform.position = player.transform.forward;
         col.gameObject.transform.position = end.transform.position;
-        foreach (var list in targetList)
+        if (targetList != null)
         {
-            list.TakeDamage(lightningDamage);
+            foreach (var list in targetList)
+            {
+                list.TakeDamage(lightningDamage);
+            }
         }
+       
         if (DurationEnd)
         {
             player.lightningEffect.SetActive(false);

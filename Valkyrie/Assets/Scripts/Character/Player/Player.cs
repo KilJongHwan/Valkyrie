@@ -26,7 +26,7 @@ public class Player : MonoBehaviour, IStatus, IEquiptable
     public GameObject levelUpEffect = null;
     public GameObject lightningEffect = null;
 
-    uint gold = 0;
+    uint gold = 5000;
 
     public Spirit spirit;
     GameObject weapon;
@@ -48,9 +48,12 @@ public class Player : MonoBehaviour, IStatus, IEquiptable
     }
 
     public Inventory inven;
+    public InventoryUI invenUI;
     public CastData[] castDatas;
+    public QuestUI questUI;
 
     public SkillWindow window;
+    public SkillWindowUI windowUI;
     BoxCollider weaponCollider;
     Animator anim;
     TargetHP_Bar targetHP;
@@ -200,24 +203,30 @@ public class Player : MonoBehaviour, IStatus, IEquiptable
         lightningEffect = transform.GetChild(4).gameObject;
         hollow = GetComponentInChildren<RedHollowControl>();
         onLevelChange += LevelUp;
-        
+
         window = new SkillWindow();
         inven = new Inventory();
     }
     private void Start()
     {
         GameManager gameManager = GameManager.Inst;
+        if (!GameManager.Inst.IsWarp)
+        {
+            invenUI = GameManager.Inst.InvenUI;
+            windowUI = GameManager.Inst.WindowUI;
+            windowUI.InitailizeWindow(window);
+            invenUI.InitializeInventory(inven);
+            questUI = GameManager.Inst.QuestUI;
+        }
         castDatas = new CastData[gameManager.SkillData.Length];
         for (int i = 0; i < gameManager.SkillData.Length; i++)
         {
             castDatas[i] = new CastData(gameManager.SkillData.skillDatas[i]);
         }
-        GameManager.Inst.WindowUI.InitailizeWindow(window);
         ActionUI actionUI = FindObjectOfType<ActionUI>();
         castDatas[0].onCoolTimeChange += actionUI[0].RefreshUI;
         castDatas[0].onCoolTimeChange += actionUI[1].RefreshUI;
         castDatas[0].onCoolTimeChange += actionUI[2].RefreshUI;
-        GameManager.Inst.InvenUI.InitializeInventory(inven);
         if (targetEffect == null)
         {
             targetEffect = GameObject.Find("targetEffect");
@@ -359,7 +368,7 @@ public class Player : MonoBehaviour, IStatus, IEquiptable
         Collider[] cols = Physics.OverlapSphere(transform.position, consumeRange, LayerMask.GetMask("Item"));
         foreach (var col in cols)
         {
-            Item item = GetComponent<Item>();
+            Item item = col.GetComponent<Item>();
 
             IConsumable consumable = item.data as IConsumable;
             if (consumable != null)
@@ -484,12 +493,16 @@ public class Player : MonoBehaviour, IStatus, IEquiptable
     }
     IEnumerator SkillHollow()
     {
+        CapsuleCollider hollowCol = transform.GetChild(5).GetComponent<CapsuleCollider>();
+
         hollow.Play_Charging();
         yield return new WaitForSeconds(3.0f);
         hollow.Finish_Charging();
         yield return new WaitForSeconds(1.0f);
         hollow.Burst_Beam();
+        hollowCol.enabled = true;
         yield return new WaitForSeconds(3.0f);
+        hollowCol.enabled = false;
         hollow.Dead();
     }
 }

@@ -13,7 +13,8 @@ public class CharacterData
     public float Exp;
     public Inventory Inven;
     public InventoryUI InvenSaveUI;
-    public ItemSlot EquipItemSlot;
     public SkillWindow SkillWindow;
     public SkillWindowUI SkillWindowSave;
+    public SpiritUI SpiritUI;
+    public QuestManager QuestM;
 }

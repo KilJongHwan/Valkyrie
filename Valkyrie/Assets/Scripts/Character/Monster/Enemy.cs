@@ -45,6 +45,7 @@ public class Enemy : MonoBehaviour, IStatus
     bool isDead = false;
 
     public Material[] materials;
+    SkinnedMeshRenderer myMat;
 
     public float HP
     {
@@ -89,6 +90,8 @@ public class Enemy : MonoBehaviour, IStatus
     {
         anim = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
+        materials = new Material[2];
+        myMat = GetComponentInChildren<SkinnedMeshRenderer>();
     }
     private void Start()
     {
@@ -321,9 +324,15 @@ public class Enemy : MonoBehaviour, IStatus
     }
     IEnumerator DeadEffect()
     {
-        Material myM = GetComponentInChildren<Material>();
-        myM = materials[1];
+        myMat.material = materials[1];
         yield return new WaitForSeconds(3.0f);
+        Collider[] colliders = GetComponents<Collider>();
+        foreach (var col in colliders)
+        {
+            col.enabled = false;
+        }
+        agent.enabled = false;
+        Destroy(this.gameObject, 5.0f);
     }
     IEnumerator RepeatChase()
     {
@@ -343,13 +352,14 @@ public class Enemy : MonoBehaviour, IStatus
     {
         if (!isDead)
         {
-            GameManager.Inst.Quest.QuestPoint++;
             ChangeState(EnemyState.Dead);
+            GameManager.Inst.Quest.QuestPoint++;
         }
     }
     void ItemDrop()
     {
         ItemFactory.MakeItem(ItemCode.HealingPotion, transform.position, true);
+        ItemFactory.MakeItem(ItemCode.GoldCoin, transform.position, true);
     }
     bool BlockByWall(Vector3 targetPosition)
     {

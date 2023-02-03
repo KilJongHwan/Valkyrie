@@ -15,5 +15,10 @@ public class QuestUI : MonoBehaviour
         {
             text.gameObject.SetActive(false);
         }
+        if (GameManager.Inst.IsWarp)
+        {
+            qTexts[1].Upload(GameManager.Inst.Quest.CheckQuest(2000, 0), GameManager.Inst.Quest.CheckQuest(2000, 1) + $" {GameManager.Inst.Quest.QuestPoint} / 1");
+            qTexts[1].gameObject.SetActive(true);
+        }
     }
 }

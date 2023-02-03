@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 42531664555910627}
   - component: {fileID: 4436452326859358164}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: CopperCoin
-  m_TagString: Untagged
+  m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -56,7 +56,7 @@ GameObject:
   - component: {fileID: 38323377644458543}
   - component: {fileID: 71876852839870575}
   - component: {fileID: 59802215776865965}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: CopperCoin
   m_TagString: Untagged
   m_Icon: {fileID: 0}

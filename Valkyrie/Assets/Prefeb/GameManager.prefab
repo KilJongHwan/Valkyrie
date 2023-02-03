@@ -109,3 +109,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   questID: 10
   questActionIndex: 0
+  questPoint: 0

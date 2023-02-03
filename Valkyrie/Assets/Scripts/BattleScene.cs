@@ -4,8 +4,13 @@ using UnityEngine;
 
 public class BattleScene : MonoBehaviour
 {
+    Player player;
     private void Start()
     {
-        GameManager.Inst.LoadData(GameManager.Inst.MainPlayer);
-    }
+        player = GameManager.Inst.MainPlayer;
+        GameManager.Inst.LoadData(player);
+        player.HP = player.MaxHP;
+        player.MP = player.MaxMP;
+        player.Exp += 1500.0f;
+    } 
 }

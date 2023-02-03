@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1416336465255542053}
   - component: {fileID: -6704397793662744630}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SilverCoin
-  m_TagString: Untagged
+  m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -56,7 +56,7 @@ GameObject:
   - component: {fileID: 1421143211617147625}
   - component: {fileID: 1427525967783753897}
   - component: {fileID: 1433474113004619371}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SilverCoin
   m_TagString: Untagged
   m_Icon: {fileID: 0}

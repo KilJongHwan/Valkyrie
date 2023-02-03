@@ -59,7 +59,11 @@ public class ActionSkillSlotUI : SkillSlotUI
     {
         if (duration)
         {
-
+            coolTimeImage.color = Color.cyan;
+        }
+        else
+        {
+            coolTimeImage.color = Color.black;
         }
     }
     public override void OnPointerClick(PointerEventData eventData)
@@ -94,7 +98,7 @@ public class ActionSkillSlotUI : SkillSlotUI
         }
         else
         {
-            if (!SkillSlot.IsEmpty())
+            if (!SkillSlot.IsEmpty() && !player.lightningEffect.activeSelf)
             {
                 player.Casting((SkillCode)slotUI.SkillSlot.SkillData.id);
                 if (player.isSkillReady)
