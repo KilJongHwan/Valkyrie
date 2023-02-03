@@ -21,7 +21,7 @@ public class QuestManager : MonoBehaviour
         {
             questPoint = value;
             onRequirePoint?.Invoke(2000);
-            onQuestClear(500.0f, 50000);
+            onQuestClear?.Invoke(500.0f, 50000);
         }
     }
 
